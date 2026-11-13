@@ -31,8 +31,9 @@ body.lootcur{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000
 #hud.show{opacity:1}
 .orb{position:absolute;bottom:4px;width:190px;height:190px;pointer-events:auto}
 .orb canvas{position:absolute}
-.orb .liquid{left:16.3%;top:16.3%;width:67.4%;height:67.4%}
-.orb .frame{left:0;top:0;width:100%;height:100%;pointer-events:none}
+.orb .liquid{left:20.6%;top:20.6%;width:58.8%;height:58.8%;border-radius:50%}
+.orb .frame{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.9))}
+.orb:before{content:"";position:absolute;left:19%;top:19%;width:62%;height:62%;border-radius:50%;background:#050302;box-shadow:inset 0 0 18px #000}
 .orb .txt{position:absolute;width:100%;top:84px;text-align:center;font-size:14px;font-weight:700;text-shadow:0 0 4px #000,0 0 2px #000;opacity:0;transition:opacity .2s}
 .orb:hover .txt{opacity:1}
 #orbLife{left:6px}#orbMana{right:6px}
@@ -45,12 +46,15 @@ body.lootcur{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000
 #xp{position:absolute;left:40px;right:40px;top:9px;height:6px;background:#060504;border:1px solid #000;box-shadow:0 0 0 1px #3a2c1c}
 #xpfill{height:100%;width:0;background:linear-gradient(#f6dc8a,#9a7224);box-shadow:0 0 6px rgba(255,200,80,.6);transition:width .3s}
 #slots{position:absolute;left:0;right:0;top:22px;display:flex;justify-content:center;gap:9px}
-.slot{position:relative;width:60px;height:60px;background:radial-gradient(circle at 50% 40%,#2a231c,#0a0807);border:1px solid #000;box-shadow:0 0 0 2px #5a4428,0 0 0 3px #000,inset 0 0 12px #000;cursor:pointer}
-.slot canvas{width:100%;height:100%;display:block;filter:drop-shadow(0 0 3px rgba(0,0,0,.9))}
-.slot .cd{position:absolute;inset:0}
+.slot{position:relative;width:60px;height:60px;background:#050403;border:2px solid;border-color:#8c7550 #3a2c1a #24190e #6e5a3a;box-shadow:0 0 0 1px #000,0 0 0 3px #2b2117,0 0 0 4px #000,0 4px 10px rgba(0,0,0,.9);cursor:pointer}
+.slot .ic{position:absolute;inset:0;background-size:cover;background-position:center;box-shadow:inset 0 0 10px 3px rgba(0,0,0,.85)}
+.slot .gloss{position:absolute;inset:0;pointer-events:none;background:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,.04) 38%,transparent 50%)}
+.slot .cdc{position:absolute;inset:0;width:100%;height:100%}
+.slot .cdt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#f7e6bd;text-shadow:0 0 4px #000,0 0 8px #000}
+.slot.ready{animation:rdy .5s ease-out}
 .slot .key{position:absolute;left:2px;top:1px;font-size:10px;color:#e8d8b0;text-shadow:0 0 3px #000,0 0 2px #000;font-weight:700}
 .slot .cnt{position:absolute;right:3px;bottom:1px;font-size:13px;font-weight:700;color:#fff;text-shadow:0 0 3px #000}
-.slot.nomana canvas{filter:grayscale(.8) brightness(.45) sepia(.3) hue-rotate(180deg)}
+.slot.nomana .ic{filter:grayscale(.85) brightness(.45)}
 .slot:hover{box-shadow:0 0 0 2px #c9a463,0 0 0 3px #000,0 0 12px rgba(255,190,90,.5),inset 0 0 12px #000}
 #meta{position:absolute;left:46px;bottom:6px;text-align:center;font-size:11px;color:#9a8a6a;letter-spacing:1px}
 #meta b{color:#e8d8b0}
@@ -137,26 +141,39 @@ body.mobile .ft{font-size:17px}body.mobile .ft.crit{font-size:24px}body.mobile .
 body.mobile .loot{font-size:12px;padding:5px 10px}
 body.mobile .ebar{width:44px;height:5px}
 /* touch controls */
-.abtn{position:absolute;border-radius:50%;background:radial-gradient(circle at 50% 40%,rgba(42,35,28,.92),rgba(8,6,5,.92));box-shadow:0 0 0 2px #5a4428,0 0 0 3px #000,0 4px 14px rgba(0,0,0,.8),inset 0 0 14px #000;overflow:hidden;pointer-events:auto;touch-action:none}
-.abtn canvas{position:absolute;left:14%;top:14%;width:72%;height:72%;filter:drop-shadow(0 0 3px #000)}
-.abtn.big{box-shadow:0 0 0 2px #8a6a3a,0 0 0 3px #000,0 0 0 5px rgba(201,164,99,.35),0 4px 18px rgba(0,0,0,.9),inset 0 0 16px #000}
-.abtn .cd{position:absolute;inset:0;border-radius:50%}
-.abtn.down{filter:brightness(1.5);transform:scale(.94)}
-.abtn.nomana canvas{filter:grayscale(.8) brightness(.45)}
-.abtn .cnt{position:absolute;right:18%;bottom:10%;font-size:13px;font-weight:700;color:#fff;text-shadow:0 0 3px #000,0 0 2px #000}
-#mbtns{position:absolute;left:calc(var(--sal) + 8px);display:flex;gap:8px;pointer-events:auto}
-@media (orientation:portrait){#mbtns{bottom:calc(var(--sab) + 14px)}}
-@media (orientation:landscape){#mbtns{top:calc(var(--sat) + var(--O) + 34px);flex-direction:column}}
-.mbtn{width:clamp(42px,11vmin,54px);height:clamp(42px,11vmin,54px);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:9px;letter-spacing:1px;color:#d9c9a3;text-transform:uppercase;background:linear-gradient(180deg,rgba(34,28,22,.9),rgba(10,8,7,.92));box-shadow:inset 0 0 0 1px #5a4428,0 0 0 1px #000,0 3px 10px rgba(0,0,0,.8);touch-action:none}
-.mbtn svg{width:46%;height:46%;margin-bottom:2px}
-#stickZone{position:absolute;left:0;bottom:0;width:50%;height:62%;pointer-events:none;touch-action:none}
-body.stickmode #stickZone{pointer-events:auto}
-@media (orientation:portrait){body.stickmode #mbtns{bottom:auto;top:calc(var(--sat) + var(--O) + 34px)}body.stickmode #target{left:auto;right:calc(var(--sar) + 10px);top:calc(var(--sat) + clamp(84px,24vmin,120px) + 34px);text-align:right}}
-#stickBase{position:fixed;width:clamp(110px,30vmin,150px);height:clamp(110px,30vmin,150px);border-radius:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity .15s;background:radial-gradient(circle,rgba(20,16,12,.25),rgba(20,16,12,.55));box-shadow:0 0 0 2px rgba(138,106,58,.55),inset 0 0 20px rgba(0,0,0,.6);pointer-events:none}
+.abtn,.mbtn{position:absolute;border-radius:50%;pointer-events:auto;touch-action:none}
+.hb .ic{position:absolute;inset:0;border-radius:50%;background-size:cover;background-position:center;box-shadow:inset 0 0 10px 3px rgba(0,0,0,.9),inset 0 -8px 16px rgba(0,0,0,.65)}
+.hb .gloss{position:absolute;inset:0;border-radius:50%;pointer-events:none;background:radial-gradient(ellipse 72% 46% at 42% 16%,rgba(255,250,235,.34),rgba(255,255,255,.07) 58%,transparent 72%),radial-gradient(circle at 50% 55%,transparent 55%,rgba(0,0,0,.6) 100%)}
+.hb .cdc{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;pointer-events:none}
+.hb .bz{position:absolute;left:50%;top:50%;height:auto;pointer-events:none;filter:drop-shadow(0 3px 5px rgba(0,0,0,.95))}
+.hb .cdt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:clamp(15px,4.6vmin,22px);color:#f7e6bd;text-shadow:0 0 4px #000,0 0 10px #000,0 2px 2px #000;pointer-events:none}
+.abtn{transition:transform .06s}
+.abtn.down{transform:scale(.92)}.abtn.down .ic{filter:brightness(1.35) saturate(1.1)}
+.abtn.big.down .ic{box-shadow:inset 0 0 10px 3px rgba(0,0,0,.9),0 0 22px 6px rgba(255,150,50,.55)}
+.abtn.big.locked .ic{box-shadow:inset 0 0 10px 3px rgba(0,0,0,.9),inset 0 0 18px 4px rgba(255,120,40,.45)}
+.abtn.nomana .ic{filter:grayscale(.85) brightness(.45)}
+.abtn.deny{animation:deny .22s}
+.abtn.ready,.slot.ready{animation:rdy .5s ease-out}
+@keyframes rdy{0%{filter:brightness(2.2) drop-shadow(0 0 14px rgba(255,200,110,1))}100%{filter:none}}
+@keyframes deny{0%,100%{translate:0}25%{translate:-3px}75%{translate:3px}}
+.abtn .cnt{position:absolute;right:-2px;bottom:-4px;min-width:20px;height:20px;padding:0 4px;border-radius:10px;font-size:12px;line-height:20px;text-align:center;font-weight:700;color:#fff3d6;background:radial-gradient(circle at 40% 30%,#6a1a12,#240503);box-shadow:0 0 0 1px #c9a463,0 0 0 2px #000;z-index:2}
+#mbtns{position:absolute;left:calc(var(--sal) + 14px);display:flex;gap:14px;pointer-events:none}
+#mbtns .mbtn{position:relative;pointer-events:auto;width:clamp(36px,9.5vmin,46px);height:clamp(36px,9.5vmin,46px)}
+.mbtn b{position:absolute;left:50%;bottom:-15px;transform:translateX(-50%);font-size:8px;letter-spacing:1px;color:#cdbb92;text-transform:uppercase;text-shadow:0 0 3px #000;font-weight:400}
+#mbtns{top:calc(var(--sat) + var(--O) + 34px)}
+@media (orientation:landscape){#mbtns{flex-direction:column;gap:22px}}
+#stickZone{position:absolute;left:0;bottom:0;width:48%;height:74%;pointer-events:auto;touch-action:none}
+#stickBase{position:fixed;width:clamp(112px,31vmin,150px);height:clamp(112px,31vmin,150px);border-radius:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity .12s;pointer-events:none;
+  background:radial-gradient(circle,rgba(10,8,6,.15) 0%,rgba(10,8,6,.45) 62%,rgba(0,0,0,.6) 70%,transparent 71%)}
+#stickBase:before{content:"";position:absolute;inset:-4%;border-radius:50%;background:var(--ring) center/100% 100% no-repeat;opacity:.9;filter:drop-shadow(0 2px 6px #000)}
 #stickBase.on{opacity:1}
-#stickHint{position:absolute;left:calc(var(--sal) + 22px);bottom:calc(var(--sab) + 24px);width:clamp(96px,26vmin,130px);height:clamp(96px,26vmin,130px);border-radius:50%;border:2px dashed rgba(138,106,58,.35);display:none;align-items:center;justify-content:center;font-size:9px;color:rgba(217,201,163,.45);letter-spacing:2px;pointer-events:none}
-body.stickmode #stickHint{display:flex}
-#stickKnob{position:absolute;left:50%;top:50%;width:42%;height:42%;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 40% 35%,#6a5232,#241a10);box-shadow:0 0 0 2px #c9a463,0 4px 10px #000}
+#stickDir{position:absolute;left:50%;top:50%;width:100%;height:100%;opacity:0;pointer-events:none;background:radial-gradient(ellipse 22% 10% at 50% 6%,rgba(255,190,100,.9),rgba(255,140,40,.25) 60%,transparent 100%)}
+#stickHint{position:absolute;left:calc(var(--sal) + 26px);bottom:calc(var(--sab) + 26px);width:clamp(96px,26vmin,128px);height:clamp(96px,26vmin,128px);border-radius:50%;pointer-events:none;opacity:.42;transition:opacity .2s;background:var(--ring) center/100% 100% no-repeat}
+#stickHint i{position:absolute;left:50%;top:50%;width:36%;height:36%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 38% 30%,#8a7552,#2a2016 55%,#0c0906);box-shadow:0 0 0 2px #6e5a3a,0 3px 6px #000}
+#stickHint.off{opacity:0}
+#stickKnob{position:absolute;left:50%;top:50%;width:40%;height:40%;border-radius:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle at 36% 28%,#d9c08a 0%,#7a6038 18%,#2e2214 52%,#0c0906 100%);box-shadow:0 0 0 2px #a8885a,0 0 0 3px #000,inset 0 -4px 8px rgba(0,0,0,.7),0 6px 12px rgba(0,0,0,.9)}
+@media (orientation:portrait){body.mobile #target{left:auto;right:calc(var(--sar) + 10px);top:calc(var(--sat) + clamp(84px,24vmin,120px) + 34px);text-align:right}}
 /* inventory + item sheet on mobile */
 body.mobile #inv{right:auto;left:50%;top:calc(var(--sat) + 8px);bottom:auto;max-height:calc(100% - var(--sat) - var(--sab) - 16px);transform:translate(-50%,10px);width:min(94vw,440px);max-height:none;overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;padding:14px 14px 16px}
 body.mobile #inv.show{transform:translate(-50%,0)}
@@ -177,25 +194,21 @@ body.mobile .btn{touch-action:manipulation}
 <div id="game"></div>
 <div id="labels"></div>
 <div id="hud">
-  <div class="orb" id="orbLife"><canvas class="liquid" id="orbL" width="128" height="128"></canvas><canvas class="frame" id="orbLF" width="190" height="190"></canvas><div class="txt" id="lifeTxt"></div></div>
-  <div class="orb" id="orbMana"><canvas class="liquid" id="orbM" width="128" height="128"></canvas><canvas class="frame" id="orbMF" width="190" height="190"></canvas><div class="txt" id="manaTxt"></div></div>
+  <div class="orb" id="orbLife"><canvas class="liquid" id="orbL" width="128" height="128"></canvas><img class="frame" id="orbLF" alt=""><div class="txt" id="lifeTxt"></div></div>
+  <div class="orb" id="orbMana"><canvas class="liquid" id="orbM" width="128" height="128"></canvas><img class="frame" id="orbMF" alt=""><div class="txt" id="manaTxt"></div></div>
   <div id="bar"><div id="xp"><div id="xpfill"></div></div><div id="slots"></div><div id="meta">LEVEL <b id="lvl">1</b></div><div id="invbtn">INVENTORY (I)</div></div>
   <div id="target"><div id="tname"></div><div id="tbar"><div id="tfill"></div></div></div>
   <canvas id="minimap" width="200" height="200"></canvas>
   <div id="gold">✦ <span id="goldv">0</span> Gold</div>
   <div id="mxp"><i></i></div><div id="mlvl">LEVEL <b id="mlvlv">1</b></div>
   <div id="touch">
-    <div id="stickZone"><div id="stickHint">MOVE</div><div id="stickBase"><div id="stickKnob"></div></div></div>
-    <div class="abtn big" id="bAtk"><canvas width="128" height="128"></canvas></div>
-    <div class="abtn" id="b1"><canvas width="128" height="128"></canvas><div class="cd"></div></div>
-    <div class="abtn" id="b2"><canvas width="128" height="128"></canvas><div class="cd"></div></div>
-    <div class="abtn" id="b3"><canvas width="128" height="128"></canvas><div class="cd"></div></div>
-    <div class="abtn" id="bPot"><canvas width="128" height="128"></canvas><span class="cnt"></span></div>
-    <div id="mbtns">
-      <div class="mbtn" id="bInv"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a463" stroke-width="1.8"><path d="M5 8h14l-1.5 12h-11z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Bag</div>
-      <div class="mbtn" id="bMode"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a463" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="#c9a463"/></svg><span>Tap</span></div>
-      <div class="mbtn" id="bMap"><svg viewBox="0 0 24 24" fill="none" stroke="#c9a463" stroke-width="1.8"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg>Map</div>
-    </div>
+    <div id="stickZone"><div id="stickHint"><i></i></div><div id="stickBase"><div id="stickDir"></div><div id="stickKnob"></div></div></div>
+    <div class="abtn big" id="bAtk"></div>
+    <div class="abtn" id="b1"></div>
+    <div class="abtn" id="b2"></div>
+    <div class="abtn" id="b3"></div>
+    <div class="abtn" id="bPot"><span class="cnt"></span></div>
+    <div id="mbtns"><div class="mbtn" id="bInv"><b>Bag</b></div><div class="mbtn" id="bMap"><b>Map</b></div></div>
   </div>
 </div>
 <div id="inv" class="panel"><span id="invclose">✕</span><h2>Inventory</h2><div id="equip"></div><div id="cstats"></div><div id="grid"></div></div>
@@ -203,7 +216,7 @@ body.mobile .btn{touch-action:manipulation}
 <div id="sheet"></div>
 <div id="banner"></div>
 <div id="title" class="screen"><h1>Crypt of Ashes</h1><div class="sub">A dungeon crawler prototype</div><button class="btn" id="enter">Enter the Crypt</button>
- <div class="hint"><span class="dhint">Left-click to move &amp; attack (hold to keep going) · Right-click: Hellfire Orb<br>1 Bone Cleave · 2 Hellfire Orb · 3 Shadow Charge · Q Potion · I Inventory · M Map · Wheel: zoom</span><span class="mhint">Tap the ground to move · tap an enemy (or hold ⚔) to attack<br>Skill buttons auto-aim · "Tap/Stick" switches to a virtual joystick<br>Best played full-screen — add to Home Screen on iPhone</span></div></div>
+ <div class="hint"><span class="dhint">Left-click to move &amp; attack (hold to keep going) · Right-click: Hellfire Orb<br>1 Bone Cleave · 2 Hellfire Orb · 3 Shadow Charge · Q Potion · I Inventory · M Map · Wheel: zoom</span><span class="mhint">Left thumb: move (the stick appears where you touch)<br>Right thumb: hold the sword to chain a 3-hit combo · skills auto-aim<br>Best played full-screen — add to Home Screen on iPhone</span></div></div>
 <div id="death" class="screen"><h1>You Have Died</h1><button class="btn" id="respawn">Rise Again</button></div>
 <div id="victory" class="screen"><div class="panel"><h1>The Warden Is Slain</h1><p>Deeper halls stir beneath the Ossuary…</p><button class="btn" id="deeper">Descend Deeper</button></div></div>
 <div id="loading">AWAKENING THE DEAD…</div>

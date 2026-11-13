@@ -20,12 +20,24 @@ Textures (CC0 / public domain) - Poly Haven, https://polyhaven.com
 - Wooden Crate 01     https://polyhaven.com/a/wooden_crate_01
 (Textures downsized to 512px and meshes decimated for real-time use.)
 
-Characters
-- "Xbot" rigged character + idle/walk/run animations, from the three.js examples repository
-  (examples/models/gltf/Xbot.glb), originally from Adobe Mixamo. NOT CC0: Mixamo characters are
-  royalty-free for use inside projects, but before a commercial release these should be replaced
-  with your own or purchased character models. All hero/enemy looks (armor, ember cracks, glowing
-  eyes, cape) are procedural shaders/meshes layered on top of this one rig.
+Characters + animations (CC0 1.0 / public domain - cleared for commercial use)
+- Quaternius "Universal Animation Library" (Standard, CC0)   https://quaternius.itch.io/universal-animation-library
+- Quaternius "Universal Animation Library 2" (Standard, CC0) https://quaternius.itch.io/universal-animation-library-2
+  Both packs ship a License.txt stating CC0 1.0 (https://creativecommons.org/publicdomain/zero/1.0/).
+  Used: the UE-style "Mannequin" rig/mesh (hero and all enemies) and the motion-captured clips
+  Sword_Regular_A / B / C (+ _Rec recoveries) = 3-hit combo, Sword_Heavy_Combo, Sword_Dash,
+  Sword_Attack, Sword_Idle, Idle_Loop, Walk_Loop, Jog_Fwd_Loop, Sprint_Loop, Hit_Chest, Hit_Head,
+  Hit_Knockback, Death01, Spell_Simple_Shoot, Zombie_Idle_Loop, Zombie_Walk_Fwd_Loop, Zombie_Scratch,
+  Roll, Interact, Consume, Chest_Open, Shield_OneShot. Finger channels were dropped and replaced by a
+  fixed sword grip sampled from Sword_Idle; clips were resampled/compressed for the web.
+  All armor/ember/eye/cape looks are procedural shaders and meshes layered on this rig.
+- (Removed in this version: the Mixamo-derived "Xbot" from the three.js examples, which was NOT CC0.)
+
+HUD art (skill/potion/bag/map icons, ornate metal bezels around the orbs and buttons)
+- AI-generated for this project with the Grok Bot image generator, then cropped/masked/compressed
+  (dc-src/build-ui.py). FLAG: no third-party copyright, but confirm the image generator's terms of
+  service allow commercial use before a commercial release (or have an artist repaint them).
+- Health/mana orb liquid, glass highlights, cooldown sweeps and the virtual joystick are drawn in code.
 
 Fonts (SIL Open Font License 1.1)
 - Cinzel and Cinzel Decorative by Natanael Gama - https://fonts.google.com/specimen/Cinzel
