@@ -1,0 +1,31 @@
+CRYPT OF ASHES - prototype credits
+==================================
+
+Engine / code
+- three.js r170 (MIT License) - https://threejs.org - bundled into game.js
+- All game code, shaders, particle effects, UI, procedural dungeon and sound effects: written for this prototype.
+  (Sound effects are synthesized live with the Web Audio API - no audio files.)
+
+Textures (CC0 / public domain) - Poly Haven, https://polyhaven.com
+- Medieval Blocks 02 (floor)        https://polyhaven.com/a/medieval_blocks_02
+- Castle Wall Slates (walls)        https://polyhaven.com/a/castle_wall_slates
+- Stacked Stone Wall (pillars/rubble/wall tops) https://polyhaven.com/a/stacked_stone_wall
+
+3D props (CC0 / public domain) - Poly Haven
+- Treasure Chest      https://polyhaven.com/a/treasure_chest
+- Wine Barrel 01      https://polyhaven.com/a/wine_barrel_01
+- Gothic Statue       https://polyhaven.com/a/gothic_statue
+- Kite Shield         https://polyhaven.com/a/kite_shield
+- Wooden Handle Saber https://polyhaven.com/a/wooden_handle_saber
+- Wooden Crate 01     https://polyhaven.com/a/wooden_crate_01
+(Textures downsized to 512px and meshes decimated for real-time use.)
+
+Characters
+- "Xbot" rigged character + idle/walk/run animations, from the three.js examples repository
+  (examples/models/gltf/Xbot.glb), originally from Adobe Mixamo. NOT CC0: Mixamo characters are
+  royalty-free for use inside projects, but before a commercial release these should be replaced
+  with your own or purchased character models. All hero/enemy looks (armor, ember cracks, glowing
+  eyes, cape) are procedural shaders/meshes layered on top of this one rig.
+
+Fonts (SIL Open Font License 1.1)
+- Cinzel and Cinzel Decorative by Natanael Gama - https://fonts.google.com/specimen/Cinzel
