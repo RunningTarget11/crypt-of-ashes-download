@@ -3,13 +3,16 @@ CRYPT OF ASHES - prototype credits
 
 Engine / code
 - three.js r170 (MIT License) - https://threejs.org - bundled into game.js
-- All game code, shaders, particle effects, UI, procedural dungeon and sound effects: written for this prototype.
-  (Sound effects are synthesized live with the Web Audio API - no audio files.)
+- All game code, shaders, particle effects, UI, procedural cave generator and sound: written for this prototype.
+  (All audio - combat sounds, item pickups, the cave rumble bed and the echoing water drips - is synthesized
+  live with the Web Audio API. There are no audio files, so there is nothing to license.)
 
 Textures (CC0 / public domain) - Poly Haven, https://polyhaven.com
-- Medieval Blocks 02 (floor)        https://polyhaven.com/a/medieval_blocks_02
-- Castle Wall Slates (walls)        https://polyhaven.com/a/castle_wall_slates
-- Stacked Stone Wall (pillars/rubble/wall tops) https://polyhaven.com/a/stacked_stone_wall
+- Dark Rock by Amal Kumar (cave walls, stalagmites, stalactites, boulders, rubble)  https://polyhaven.com/a/dark_rock
+- Rock Ground by Rob Tuytel (cave floor)                                          https://polyhaven.com/a/rock_ground
+  (diffuse / normal / ARM maps, downsized to 1024px.)
+- Lava-crack, puddle and light-shaft textures are generated in code.
+- (Removed in this version: Medieval Blocks 02, Castle Wall Slates and Stacked Stone Wall - no longer used.)
 
 3D props (CC0 / public domain) - Poly Haven
 - Treasure Chest      https://polyhaven.com/a/treasure_chest
@@ -20,24 +23,47 @@ Textures (CC0 / public domain) - Poly Haven, https://polyhaven.com
 - Wooden Crate 01     https://polyhaven.com/a/wooden_crate_01
 (Textures downsized to 512px and meshes decimated for real-time use.)
 
-Characters + animations (CC0 1.0 / public domain - cleared for commercial use)
+Character models (CC0 1.0 / public domain - cleared for commercial use) - Quaternius, https://quaternius.com
+- "Modular Character Outfits - Fantasy" (Standard/free version, CC0 1.0)
+    https://quaternius.com/packs/modularcharacteroutfitsfantasy.html
+    Used: Male Ranger outfit (hero; also re-tinted for the Grave Caller, Brute and boss) and Male Peasant
+    outfit (Ashen Dead skeletons). Base colour desaturated/darkened, meshes decimated, a low-poly LOD
+    built for enemies (dc-src/build-char2.mjs).
+- "Universal Base Characters" (Standard/free version, CC0 1.0)
+    https://quaternius.com/packs/universalbasecharacters.html
+    Used: the Superhero Male head (cut from the full body) on every character.
+  Both packs ship License_Standard.txt stating "CC0 1.0 Universal (CC0 1.0) Public Domain Dedication".
+  They share the UAL 65-bone skeleton, so the UAL animations below drive them with no retargeting.
+
+Animations (CC0 1.0 / public domain - cleared for commercial use)
 - Quaternius "Universal Animation Library" (Standard, CC0)   https://quaternius.itch.io/universal-animation-library
 - Quaternius "Universal Animation Library 2" (Standard, CC0) https://quaternius.itch.io/universal-animation-library-2
   Both packs ship a License.txt stating CC0 1.0 (https://creativecommons.org/publicdomain/zero/1.0/).
-  Used: the UE-style "Mannequin" rig/mesh (hero and all enemies) and the motion-captured clips
+  Used: the UE-style 65-bone rig and the motion-captured clips
   Sword_Regular_A / B / C (+ _Rec recoveries) = 3-hit combo, Sword_Heavy_Combo, Sword_Dash,
   Sword_Attack, Sword_Idle, Idle_Loop, Walk_Loop, Jog_Fwd_Loop, Sprint_Loop, Hit_Chest, Hit_Head,
   Hit_Knockback, Death01, Spell_Simple_Shoot, Zombie_Idle_Loop, Zombie_Walk_Fwd_Loop, Zombie_Scratch,
   Roll, Interact, Consume, Chest_Open, Shield_OneShot. Finger channels were dropped and replaced by a
   fixed sword grip sampled from Sword_Idle; clips were resampled/compressed for the web.
-  All armor/ember/eye/cape looks are procedural shaders and meshes layered on this rig.
+  Glowing eyes, ember-dissolve deaths and hit flashes are shader effects written for this project.
 - (Removed in this version: the Mixamo-derived "Xbot" from the three.js examples, which was NOT CC0.)
 
-HUD art (skill/potion/bag/map icons, ornate metal bezels around the orbs and buttons)
-- AI-generated for this project with the Grok Bot image generator, then cropped/masked/compressed
-  (dc-src/build-ui.py). FLAG: no third-party copyright, but confirm the image generator's terms of
-  service allow commercial use before a commercial release (or have an artist repaint them).
+HUD + inventory art - AI-GENERATED (see FLAG)
+- Skill/potion/bag/map icons and the ornate metal bezels (dc-src/build-ui.py)
+- Item icons: sword, axe, mace, helm, chest armor, gloves, boots, ring, amulet, gold (ui/it_*.webp)
+- Dark leather panel texture (bottom bar + inventory), gilded corner ornament, hooded-knight paperdoll
+  art behind the equipment slots (ui/tex_leather, ui/orn_corner, ui/paperdoll; dc-src/build-ui2.py)
+  All generated for this project with the Grok Bot image generator, then cropped/masked/compressed.
+  FLAG - NOT YET COMMERCIALLY CLEARED: there is no third-party copyright holder, but confirm the image
+  generator's terms of service allow commercial use before a commercial release, or have an artist
+  repaint these (they are drop-in replacements: same file names and sizes).
 - Health/mana orb liquid, glass highlights, cooldown sweeps and the virtual joystick are drawn in code.
 
 Fonts (SIL Open Font License 1.1)
 - Cinzel and Cinzel Decorative by Natanael Gama - https://fonts.google.com/specimen/Cinzel
+
+Commercial-use summary
+- Cleared (CC0 / MIT / OFL): three.js, all Poly Haven textures and props, all Quaternius models and
+  animations, the Cinzel fonts, all code and synthesized audio.
+- FLAGGED: the AI-generated 2D UI art listed above (icons, bezels, leather texture, corner ornament,
+  paperdoll) - check the generator's terms before selling the game.

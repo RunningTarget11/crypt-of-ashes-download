@@ -36,8 +36,8 @@ for(const orient of ['landscape','portrait']){
   r.afterRelease=await page.evaluate(()=>{const T=__TEST;T.run(6);const a=T.P.pos.clone();T.run(10);return +T.P.pos.distanceTo(a).toFixed(3);});
   ok(r.afterRelease<0.05,orient+' moving after release');
   // 2) combat: bring 3 enemies close, hold the attack button with a real touch
-  await page.evaluate(()=>{const T=__TEST;const D=T.D();const rm=D.order.filter(r=>r.kind==='normal'&&r.w>=8&&r.h>=8)[0]||D.order[2];
-    T.teleport((rm.x+rm.w/2)*2,(rm.y+rm.h*0.62)*2);T.run(4);
+  await page.evaluate(()=>{const T=__TEST;const D=T.D();const rm=D.order.filter(r=>r.kind!=='start'&&r.kind!=='boss'&&r.r>=4)[0]||D.order[2];
+    T.teleport(rm.cx,rm.cy);T.run(4);
     const es=T.enemies.filter(e=>!e.def.boss).sort((a,b)=>a.pos.distanceTo(T.P.pos)-b.pos.distanceTo(T.P.pos)).slice(0,3);
     es.forEach((e,i)=>{e.pos.set(T.P.pos.x+(i-1)*1.4+0.6,0,T.P.pos.z+2.2);e.state='chase';e.cd=99;e.hp=e.maxHp=9999;});
     T.P.yaw=-Math.PI/2;/* facing away-ish: soft lock must turn us */T.run(3);T.comboLog=[];T.hits=0;T.P.mana=999;});
@@ -72,7 +72,20 @@ for(const orient of ['landscape','portrait']){
   ok(r.ringDrawn>100,orient+' cooldown ring not drawn');
   await page.evaluate(()=>{__TEST.P.hp=50;});const p0=await page.evaluate(()=>__TEST.P.potions);await tapEl('#bPot');r.potion=p0-await page.evaluate(()=>__TEST.P.potions);ok(r.potion===1,orient+' potion');
   await tapEl('#bInv');await page.evaluate(()=>__TEST.run(1));r.inv=await page.evaluate(()=>document.getElementById('inv').classList.contains('show'));ok(r.inv,orient+' inventory');
+  // inventory usable by touch: give an item, tap its cell -> item sheet -> Equip
+  await page.evaluate(()=>{const T=__TEST;T.dropTest();T.run(40);for(const L of T.loots.slice())if(!L.gold){T.P.inv.push(L.item);}T.refreshInv();});
+  const cellPos=await page.evaluate(()=>{const c=document.querySelector('#grid .cell img');if(!c)return null;const b=c.parentElement.getBoundingClientRect();return [b.left+b.width/2,b.top+b.height/2];});
+  if(cellPos){await page.touchscreen.tap(cellPos[0],cellPos[1]);await page.waitForTimeout(150);}
+  r.sheet=await page.evaluate(()=>document.getElementById('sheet').classList.contains('show')&&!!document.querySelector('#sheet .tt-name'));ok(r.sheet,orient+' item sheet did not open');
+  await page.screenshot({path:`${SS}/mobile_${orient}_inventory.jpg`,quality:88});
+  const n0=await page.evaluate(()=>__TEST.P.inv.length);const eqb=await page.locator('#shEq').boundingBox();if(eqb)await page.touchscreen.tap(eqb.x+eqb.width/2,eqb.y+eqb.height/2);
+  r.equipTap=await page.evaluate(n0=>({sheetClosed:!document.getElementById('sheet').classList.contains('show'),invLen:__TEST.P.inv.length,n0}),n0);ok(r.equipTap.sheetClosed,orient+' equip button');
   await tapEl('#invclose');
+  r.invClosed=await page.evaluate(()=>!document.getElementById('inv').classList.contains('show'));ok(r.invClosed,orient+' inventory close');
+  // everything on the bottom: all controls' centres must be in the lower part of the screen
+  r.bottom=await page.evaluate(()=>{const H=innerHeight;const o={};for(const id of ['bAtk','b1','b2','b3','bPot','bInv','bMap','orbLife','orbMana','stickHint']){const b=document.getElementById(id).getBoundingClientRect();o[id]=+((b.top+b.height/2)/H).toFixed(2);}return o;});
+  ok(Object.values(r.bottom).every(v=>v>(orient==='portrait'?0.55:0.45)),orient+' a control is not on the bottom: '+JSON.stringify(r.bottom));
+  await page.screenshot({path:`${SS}/mobile_${orient}_hud.jpg`,quality:88});
   r.scroll=await page.evaluate(()=>({sx:scrollX,sy:scrollY,ta:getComputedStyle(document.body).touchAction}));
   r.errors=errs.slice(0,10);ok(errs.length===0,orient+' console errors: '+errs.slice(0,3).join(' | '));
   res[orient]=r;await ctx.close();

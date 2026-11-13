@@ -1,4 +1,5 @@
-export const RARITY={common:{name:'Common',color:'#c8c3b8',beam:null},magic:{name:'Magic',color:'#6b8cff',beam:[0.25,0.4,1.6]},rare:{name:'Rare',color:'#f2d24b',beam:[1.5,1.2,0.25]},legendary:{name:'Legendary',color:'#ff8a1e',beam:[2.2,0.8,0.12]}};
+export const RARITY={common:{name:'Common',color:'#c8c3b8',beam:null},magic:{name:'Magic',color:'#6b8cff',beam:[0.25,0.4,1.6]},rare:{name:'Rare',color:'#f2d24b',beam:[1.5,1.2,0.25]},legendary:{name:'Legendary',color:'#ff8a1e',beam:[2.2,0.8,0.12]},unique:{name:'Unique',color:'#d8c28a',beam:[1.9,1.6,1.0]}};
+export const RANK=['common','magic','rare','legendary','unique'];
 const BASES=[
  {type:'sword',slot:'weapon',names:['Broadsword','Falchion','Bastard Sword','Gladius'],dmg:[[4,9],[6,12]]},
  {type:'axe',slot:'weapon',names:['War Axe','Cleaver','Bearded Axe'],dmg:[[5,11],[7,14]]},
@@ -24,21 +25,29 @@ const AFFIX=[
 const PRE=['Grim','Ashen','Blood','Dread','Hollow','Rune','Wraith','Grave','Doom','Soul','Ember','Night'];
 const SUF=['Bane','Fang','Shroud','Whisper','Howl','Ward','Thirst','Oath','Mark','Grasp','Veil','Reaver'];
 const LEG=[{n:"Ashbringer's Oath",t:'sword'},{n:'The Gravewarden\'s Maw',t:'helm'},{n:'Cinderheart',t:'amulet'},{n:'Mourning Plate',t:'armor'},{n:'Hand of Varkoth',t:'gloves'},{n:'Ring of the Drowned King',t:'ring'},{n:'Skullsplitter',t:'axe'}];
+const UNIQ=[{n:'Harlequin Crest of Ash',t:'helm',sp:'Your skills cost 20% less Mana and cooldowns recover 15% faster',fl:'"The crown was burned with its king. Only the ash remembered how to rule."'},
+ {n:'Grandfather of the Deep',t:'sword',sp:'Critical strikes deal 60% more damage',fl:'"Forged before the first sun, it has outlived every hand that held it."'},
+ {n:'Doombringer',t:'mace',sp:'Every 5th hit unleashes a burst of shadow fire',fl:'"Mercy is a candle. This is the dark that comes after."'},
+ {n:'Tyrael\'s Ember',t:'armor',sp:'Gain 25% damage reduction while above 50% Life',fl:'"Even fallen light burns."'}];
+const FLAV={sword:'"Steel remembers every throat it has opened."',axe:'"Notched by the bones of a hundred wars."',mace:'"Faith is easiest to teach with weight."',helm:'"The visor hides the fear. Nothing hides the scars."',armor:'"Every dent a prayer that went unanswered."',gloves:'"Grip tight. The dark pulls harder."',boots:'"They walked into the Depths. Only they walked out."',ring:'"Its stone pulses like a slow, dying heart."',amulet:'"Warm to the touch, as if something inside still breathes."'};
 let uid=1;
 export function rollItem(rng,ilvl,minRarity='common',luck=0){
-  const r=rng()+luck;let rar=r>0.97?'legendary':r>0.82?'rare':r>0.45?'magic':'common';
-  const order=['common','magic','rare','legendary'];if(order.indexOf(rar)<order.indexOf(minRarity))rar=minRarity;
+  const r=rng()+luck;let rar=r>0.992?'unique':r>0.97?'legendary':r>0.82?'rare':r>0.45?'magic':'common';
+  const order=RANK;if(order.indexOf(rar)<order.indexOf(minRarity))rar=minRarity;
   let base=BASES[Math.floor(rng()*BASES.length)];let name;
-  if(rar==='legendary'){const L=LEG[Math.floor(rng()*LEG.length)];base=BASES.find(b=>b.type===L.t);name=L.n;}
+  let U=null;if(rar==='legendary'){const L=LEG[Math.floor(rng()*LEG.length)];base=BASES.find(b=>b.type===L.t);name=L.n;}
+  if(rar==='unique'){U=UNIQ[Math.floor(rng()*UNIQ.length)];base=BASES.find(b=>b.type===U.t);name=U.n;}
   const bn=base.names[Math.floor(rng()*base.names.length)];
   const it={id:uid++,type:base.type,slot:base.slot,rarity:rar,base:bn,ilvl,stats:{},lines:[]};
   const sc=1+ilvl*0.18;
-  if(base.dmg){const d=base.dmg[Math.floor(rng()*2)];it.dmg=[Math.round(d[0]*sc),Math.round(d[1]*sc)];if(rar!=='common'){const m={magic:1.15,rare:1.3,legendary:1.6}[rar];it.dmg=it.dmg.map(v=>Math.round(v*m));}}
-  if(base.armor){it.armor=Math.round((base.armor[0]+rng()*(base.armor[1]-base.armor[0]))*sc*({common:1,magic:1.15,rare:1.3,legendary:1.6}[rar]));}
-  const nAff={common:0,magic:1+Math.floor(rng()*2),rare:3+Math.floor(rng()*2),legendary:4}[rar];
+  if(base.dmg){const d=base.dmg[Math.floor(rng()*2)];it.dmg=[Math.round(d[0]*sc),Math.round(d[1]*sc)];if(rar!=='common'){const m={magic:1.15,rare:1.3,legendary:1.6,unique:1.8}[rar];it.dmg=it.dmg.map(v=>Math.round(v*m));}}
+  if(base.armor){it.armor=Math.round((base.armor[0]+rng()*(base.armor[1]-base.armor[0]))*sc*({common:1,magic:1.15,rare:1.3,legendary:1.6,unique:1.8}[rar]));}
+  const nAff={common:0,magic:1+Math.floor(rng()*2),rare:3+Math.floor(rng()*2),legendary:4,unique:4}[rar];
   const pool=[...AFFIX];
-  for(let k=0;k<nAff;k++){const a=pool.splice(Math.floor(rng()*pool.length),1)[0];let v=Math.round(a.r[0]+rng()*(a.r[1]-a.r[0])*(rar==='legendary'?1.5:1));v=Math.round(v*(1+ilvl*0.08));it.stats[a.k]=v;it.lines.push(a.fmt(v));}
+  for(let k=0;k<nAff;k++){const a=pool.splice(Math.floor(rng()*pool.length),1)[0];let v=Math.round(a.r[0]+rng()*(a.r[1]-a.r[0])*(rar==='legendary'||rar==='unique'?1.5:1));v=Math.round(v*(1+ilvl*0.08));it.stats[a.k]=v;it.lines.push(a.fmt(v));}
   if(rar==='legendary'){it.special={sword:'Strikes ignite enemies in a ring of fire',helm:'Killing blows heal you for 8% Life',amulet:'Fireball explodes twice',armor:'Taking damage has a chance to unleash a nova',gloves:'Cleave pulls enemies inward',ring:'Charge leaves a trail of frost',axe:'Critical hits shatter bone, dealing double damage'}[base.type];}
+  if(U)it.special=U.sp;
+  it.flavor=U?U.fl:(rar==='rare'||rar==='legendary')?FLAV[base.type]:null;it.power=Math.round(100+ilvl*22*({common:1,magic:1.1,rare:1.25,legendary:1.4,unique:1.5}[rar]));
   if(rar==='common'||rar==='magic'){name=(rar==='magic'?(PRE[Math.floor(rng()*PRE.length)]+'touched '):'')+bn;if(rar==='magic'&&rng()<0.5)name=bn+' of '+SUF[Math.floor(rng()*SUF.length)];}
   if(rar==='rare')name=PRE[Math.floor(rng()*PRE.length)]+' '+SUF[Math.floor(rng()*SUF.length)];
   it.name=name;return it;

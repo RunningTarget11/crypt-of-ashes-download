@@ -5,7 +5,7 @@ for (const f of fs.readdirSync('tex')) {
   out.tex[f.replace('.jpg','')]='data:image/jpeg;base64,'+buf.toString('base64');
 }
 // props (Poly Haven, CC0) + characters/animations (Quaternius UAL, CC0) - the Mixamo Xbot is no longer used
-for (const k of ['gothic_statue','kite_shield','treasure_chest','wine_barrel_01','wooden_crate_01','wooden_handle_saber','hero_ual']) out.glb[k]=fs.readFileSync('glb/'+k+'.glb').toString('base64');
+for (const k of ['gothic_statue','kite_shield','treasure_chest','wine_barrel_01','wooden_crate_01','wooden_handle_saber','hero_ual','ch_ranger_m','ch_ranger_lo','ch_peasant_lo','ch_head_m','ch_head_lo']) out.glb[k]=fs.readFileSync('glb/'+k+'.glb').toString('base64');
 for (const f of fs.readdirSync('ui').filter(f=>f.endsWith('.webp'))) out.ui[f.replace('.webp','')]='data:image/webp;base64,'+fs.readFileSync('ui/'+f).toString('base64');
 out.font.cinzel='data:font/ttf;base64,'+fs.readFileSync('Cinzel.ttf').toString('base64');
 out.font.cinzelDeco='data:font/ttf;base64,'+fs.readFileSync('CinzelDecorative.ttf').toString('base64');
